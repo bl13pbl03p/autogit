@@ -3,8 +3,8 @@ Bash script which enables users to download the latest release from their favour
 
 # Install & Run
 ```sh
-git clone X
-cd X
+git clone https://github.com/bl13pbl03p/autogit.git
+cd autogit
 sudo bash autogit.sh -u "https://api.github.com/repos/anotheruser/anotherproject/releases"
 ```
 
