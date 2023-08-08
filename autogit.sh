@@ -20,49 +20,6 @@ if [ "$#" -eq 0 ]; then
     exit 1
 fi
 
-# Parse the command-line arguments
-while [[ $# -gt 0 ]]; do
-    key="$1"
-
-    case $key in
-        -u|--url)
-            # Process URL option
-            shift
-            if [ -z "$1" ]; then
-                echo "Error: URL is missing for --url option." >&2
-                usage >&2
-                exit 1
-            fi
-            url="$1"
-            download_latest_release "$url"
-            shift
-            ;;
-        -l|--list)
-            # Process list option
-            shift
-            if [ -z "$1" ]; then
-                echo "Error: File is missing for --list option." >&2
-                usage >&2
-                exit 1
-            fi
-            file="$1"
-            while IFS= read -r url; do
-                download_latest_release "$url"
-            done < "$file"
-            shift
-            ;;
-        -h|--help)
-            # Display help and exit
-            usage
-            exit 0
-            ;;
-        *)
-            # Unknown option, skip
-            shift
-            ;;
-    esac
-done
-
 # Function to download the latest release for a given URL
 download_latest_release() {
     local url=$1
@@ -131,4 +88,47 @@ fi
 # Loop through the list of URLs and download the latest release for each
 for url in "${urls[@]}"; do
     download_latest_release "$url"
+done
+
+# Parse the command-line arguments
+while [[ $# -gt 0 ]]; do
+    key="$1"
+
+    case $key in
+        -u|--url)
+            # Process URL option
+            shift
+            if [ -z "$1" ]; then
+                echo "Error: URL is missing for --url option." >&2
+                usage >&2
+                exit 1
+            fi
+            url="$1"
+            download_latest_release "$url"
+            shift
+            ;;
+        -l|--list)
+            # Process list option
+            shift
+            if [ -z "$1" ]; then
+                echo "Error: File is missing for --list option." >&2
+                usage >&2
+                exit 1
+            fi
+            file="$1"
+            while IFS= read -r url; do
+                download_latest_release "$url"
+            done < "$file"
+            shift
+            ;;
+        -h|--help)
+            # Display help and exit
+            usage
+            exit 0
+            ;;
+        *)
+            # Unknown option, skip
+            shift
+            ;;
+    esac
 done
